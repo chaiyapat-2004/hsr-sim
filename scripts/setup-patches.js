@@ -1,6 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
+// Skip patching in Vercel or non-Windows environments where native binaries work out-of-the-box
+if (process.env.VERCEL || process.env.CI || process.platform !== 'win32') {
+  process.exit(0);
+}
+
 // 1. Patch rollup
 const rollupNativePath = path.join(__dirname, '..', 'node_modules', 'rollup', 'dist', 'native.js');
 if (fs.existsSync(rollupNativePath)) {
